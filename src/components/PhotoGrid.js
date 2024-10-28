@@ -15,12 +15,20 @@ import {
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 
 const PhotoGrid = () => {
+  // State to store image data
   const [imageData, setImageData] = useState([]);
+  // State to manage the current page for pagination
   const [currentPage, setCurrentPage] = useState(1);
+  // State to manage loading state
   const [isLoading, setIsLoading] = useState(false);
+  // State to check if more images are available
   const [isMoreAvailable, setIsMoreAvailable] = useState(true);
+  // Reference to the load more element
   const loadMoreRef = useRef();
+  // Access key for Unsplash API
   const accessKey = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
+
+  // Function to fetch images from Unsplash API
   const fetchImages = async (page) => {
     setIsLoading(true);
     try {
@@ -36,6 +44,7 @@ const PhotoGrid = () => {
     }
   };
 
+  //Fetch images when current page changes
   useEffect(() => {
     fetchImages(currentPage);
   }, [currentPage]);
@@ -50,11 +59,9 @@ const PhotoGrid = () => {
       },
       { threshold: 1.0 }
     );
-
     if (loadMoreRef.current) {
       observer.observe(loadMoreRef.current);
     }
-
     return () => {
       if (loadMoreRef.current) {
         observer.unobserve(loadMoreRef.current);
@@ -62,6 +69,7 @@ const PhotoGrid = () => {
     };
   }, [isMoreAvailable]);
 
+  // Function to scroll to the top of the page
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -102,6 +110,7 @@ const PhotoGrid = () => {
           No more photos to load.
         </Typography>
       )}
+      {/* Element to trigger loading more images */}
       <div ref={loadMoreRef} style={{ height: "1px" }}></div>
       <Button
         onClick={scrollToTop}

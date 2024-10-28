@@ -4,12 +4,18 @@ import { useParams, useNavigate } from "react-router";
 import { Container, Card, CardMedia, CardContent, Typography, Button, CircularProgress } from "@mui/material";
 
 const PhotoDetails = () => {
+  // Get the photo ID from the URL parameters
   const { id } = useParams();
+  // State to store the photo details
   const [photo, setPhoto] = useState(null);
+  // State to manage loading state
   const [loading, setLoading] = useState(true);
+  // Access key for Unsplash API
   const accessKey = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
+  // Hook to navigate back to the previous page
   const navigate = useNavigate();
 
+  // Function to fetch photo details from Unsplash API
   const fetchPhotoDetails = useCallback(async () => {
     setLoading(true);
     try {
@@ -24,10 +30,12 @@ const PhotoDetails = () => {
     }
   }, [id, accessKey]);
 
+  // Fetch photo details when the component mounts or the ID changes
   useEffect(() => {
     fetchPhotoDetails();
   }, [fetchPhotoDetails]);
 
+  // Component to display photo information
   const PhotoInfo = ({ photo }) => (
     <Card>
       <CardMedia component="img" image={photo.urls.full} alt={photo.alt_description || "Photo"} />
@@ -45,6 +53,7 @@ const PhotoDetails = () => {
 
   return (
     <Container>
+      {/* Button to navigate back to the previous page */}
       <Button
         variant="contained"
         color="primary"
@@ -56,6 +65,7 @@ const PhotoDetails = () => {
       <Typography variant="h4" align="center" gutterBottom>
         Detail of Photo
       </Typography>
+      {/* Show loading spinner while fetching data */}
       {loading ? (
         <CircularProgress style={{ display: "block", margin: "20px auto" }} />
       ) : photo ? (
@@ -65,7 +75,6 @@ const PhotoDetails = () => {
           Failed to load photo details.
         </Typography>
       )}
-      
     </Container>
   );
 };
