@@ -1,25 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import PhotoGrid from "./components/PhotoGrid";
+import PhotoDetails from "./components/PhotoDetails";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Routes>
+        <Route path="/" element={<Navigate to="/photos" replace />} />
+        <Route path="/photos" element={<PhotoGrid />} />
+        <Route path="/photos/:id" element={<PhotoDetails />} />
+        {/* Thêm route Not Found */}
+        <Route path="*" element={<div>Page Not Found</div>} />
+      </Routes>
     </div>
   );
-}
+};
+
 
 export default App;
